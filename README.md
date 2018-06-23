@@ -1,0 +1,3 @@
+# webPasswordManager
+藉由我在SMIT05課程中學到的亂數產生方法，編寫JavaScript程式完成產生亂數表、密碼代換和還原等功能，以及套用Bootstrap的美術樣式來妝點網頁外觀。
+程式中為產生亂數所引入的seedrandom.js參照來源：http://davidbau.com/archives/2010/01/30/random_seeds_coded_hints_and_quintillions.html
