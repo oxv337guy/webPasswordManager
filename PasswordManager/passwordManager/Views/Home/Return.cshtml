@@ -1,0 +1,274 @@
+﻿@model passwordManager.Models.NewPassword
+@{
+    ViewBag.Title = "Return";
+}
+
+
+<br>
+<div class="container">
+    <form class="form-horizontal" method="post" action="">
+
+
+        <div class="form-group">
+            <div class="col-sm-2 right-label" for="inputSeed">
+                <lable>
+                    <span class="glyphicon glyphicon-leaf"></span>
+                    &nbsp;亂數種子
+                </lable>
+            </div>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="text" class="form-control"
+                           id="inputSeed" name="inputSeed" value=""
+                           placeholder="請輸入初始的亂數種子" required>
+                    <div class="input-group-btn">
+                        <button class="btn btn-success" type="button"
+                                id="restorePassword">
+                            <i class="glyphicon glyphicon-refresh"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2 right-label">
+                <lable>
+                    <span class="glyphicon glyphicon-user"></span>
+                    &nbsp;原始帳號
+                </lable>
+            </div>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="text" class="form-control"
+                           id="SourceAccount" name="SourceAccount"
+                           value="@Model.SourceAccount" readonly>
+                    <div class="input-group-btn">
+                        <button class="btn btn-info" type="button"
+                                id="copyAccBtn" onclick="CopyAccFunc()">
+                            <i class="glyphicon glyphicon-file"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2 right-label">
+                <lable>
+                    <span class="glyphicon glyphicon-lock"></span>
+                    &nbsp;原始密碼
+                </lable>
+            </div>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="text" class="form-control"
+                           id="OriginalPassword" name="OriginalPassword" 
+                           value="" readonly>
+                    <div class="input-group-btn">
+                        <button class="btn btn-info" type="button"
+                                id="copyPwBtn" onclick="CopyPwFunc()">
+                            <i class="glyphicon glyphicon-file"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        
+        <input type="hidden" id="pwChanged" name="PasswordText" value="@Model.PasswordText">
+
+
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <a href="/Home/Index" class="btn btn-default">回前頁</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    
+
+    var tableColNumber = 10;
+    var tableRowNumber = 100;
+    var chrNumber = tableColNumber * tableRowNumber;
+
+    
+
+    function useSeed2CreateRandomChr() {
+        var givenSeed = $("#inputSeed").val();
+        var chrList = selectedCharList();
+        var ranChrElements = sequenceRandomChrResult(chrNumber, givenSeed, chrList);
+        return ranChrElements;
+    }
+
+    
+
+    function selectedCharList() {
+        var _chrlist1 = "0123456789";
+        var _chrlist2 = "abcdefghijkmnpqrstuvwxyz";
+        var _chrlist3 = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+        var _chrlist4 = "?!@@#$%^&*";
+        var _chrList = "";
+        _chrList = _chrlist1 + _chrlist2 + _chrlist3 + _chrlist4;
+        return _chrList;
+    }
+
+
+    function sequenceRandomChrResult(_chrNumber, _givenSeed, _chrList) {
+
+        Math.seedrandom(_givenSeed);
+
+        var charList = _chrList;
+
+        // generating random character //
+        var result = "";
+        for (var i = 0; i < _chrNumber; i++) {
+            var randomNumber = Math.floor(Math.random() * charList.length);
+            var tableElement = charList.substr(randomNumber, 1);
+            result += tableElement;
+        }
+
+        return result;
+    }
+
+    var noChrFlag = 0;
+    $("#changePassword").click(function () {
+        var compareChar = $("#inputpw").val();
+
+        noChrFlag = 0;
+        var aChr = "";
+        var indexSequence = new Array();
+        var aIndNum = 0;
+        var compareResult = new Array();
+        for (var i = 0; i < compareChar.length; i++) {
+            aChr = compareChar.slice(i, i + 1);
+            indexSequence = aChrCompare2RandomList(aChr);
+            aIndNum = Math.floor(newRandomNum() * indexSequence.length);
+            compareResult.push(indexSequence[aIndNum]);
+        }
+
+        
+        var newpw = "";
+        var m = n = 0;
+        for (var j = 0; j < compareResult.length; j++) {
+            m = Math.floor(compareResult[j] / tableColNumber);
+            n = compareResult[j] % tableColNumber;
+            // newpw += String(m + 1) + String(n) + " ";
+            //newpw += String(m) + String(n) + " ";
+            newpw += String(m + 1000).substr(2, 3) + String(n);
+
+        }
+
+        
+
+    });
+
+    function newRandomNum() {
+        Math.seedrandom();
+        var n = Math.random();
+        return n;
+    }
+
+    function aChrCompare2RandomList(_compareChar) {
+        var ranChrElements = useSeed2CreateRandomChr();
+
+        var indArray = new Array();
+
+        var i = 0;
+        var newInd = 0;
+        var testFirst = ranChrElements.indexOf(_compareChar);
+
+        if (testFirst == -1) {
+            indArray.push(testFirst);
+            noChrFlag = 1;
+        }
+        else {
+            while (testFirst + 1) {
+                newInd = ranChrElements.indexOf(_compareChar, newInd + i);
+                indArray.push(newInd);
+                i = 1;
+
+                testFirst = ranChrElements.indexOf(_compareChar, newInd + 1);
+            }
+        }
+        return indArray;
+    }
+
+    
+            $("#restorePassword").click(function () {
+                var newpw = $("#pwChanged").prop("value");
+                var data_newpw = new Array();
+                for (var i=0; i<newpw.length/3; i++) {
+                    data_newpw.push(newpw.substr(i*3,3));
+                }
+
+                
+                var iTest = new Number();
+                for (var i=0; i<data_newpw.length; i++) {
+                    itest = parseInt(data_newpw[i]);
+                    if (Number.isInteger(itest) == false) {
+                        data_newpw.splice(i, i+1);
+                    }
+                }
+
+                // Finding index of the original password  //
+                iTest = new String();
+                chrIndex = new Number();
+                mCol = new Number();
+                nRow = new Number();
+                indexList = new Array();
+                for (i=0; i<data_newpw.length; i++) {
+                    itest = data_newpw[i];
+                    chrIndex = itest.length;
+                    mCol = itest.slice(chrIndex - 1, chrIndex);
+                    nRow = itest.slice(0, chrIndex - 1);
+                    chrIndex = parseInt(nRow) * 10 + parseInt(mCol);
+                    indexList.push(chrIndex);
+                }
+                
+
+                var thepw = new String();
+                var theRanChrString = useSeed2CreateRandomChr();
+                for (i=0; i<indexList.length; i++) {
+                    thepw += theRanChrString.substr(indexList[i], 1);
+                }
+                $("#OriginalPassword").val(thepw);
+
+            })
+
+            
+            function CopyPwFunc() {
+                /* Get the text field */
+                var copyText = document.getElementById("OriginalPassword");
+
+                /* Select the text field */
+                copyText.select();
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+
+                /* Alert the copied text */
+                //alert("Copied the text: " + copyText.value);
+            }
+
+            function CopyAccFunc() {
+                /* Get the text field */
+                var copyText = document.getElementById("SourceAccount");
+
+                /* Select the text field */
+                copyText.select();
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+
+                /* Alert the copied text */
+                //alert("Copied the text: " + copyText.value);
+            }
+
+</script>

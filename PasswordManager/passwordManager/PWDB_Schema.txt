@@ -1,0 +1,79 @@
+use master
+go
+
+drop database PWDB
+go
+
+create database PWDB
+go
+
+use PWDB
+go
+
+create table NewPassword
+(
+  NewPasswordId int identity(1,1) primary key,
+  UserId int not Null,
+  SourceName nvarchar(50) not Null,
+  SourceAccount nvarchar(50) not Null,
+  PasswordText nvarchar(100) not Null,
+  StateText nvarchar(max)
+)
+go
+
+create table MemberUser
+(
+  UserId int identity(1,1) primary key,
+  AccountName nvarchar(50) not Null,
+  AccountPassword nvarchar(44) not Null,
+  UserFirstName nvarchar(50) not Null,
+  UserLastName nvarchar(50) not Null,
+  UserEmail nvarchar(50) not Null
+)
+go
+
+alter table NewPassword
+add constraint FK_NewPassword_MemberUser foreign key (UserId)
+  references MemberUser (UserId)
+  on update cascade on delete cascade
+go
+
+
+insert into MemberUser (AccountName, AccountPassword, UserFirstName, UserLastName, UserEmail)
+  values ('user1234', 'A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=', '°é°é', '­û', 'test1234@createUser.com')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('1', 'createUser', 'test1234@createUser.com', '356292054229', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('1', 'Goo1', 'test111@Goo1.com', '667292849538', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('1', 'Goo2', 'test121@Goo2.com', '574218716781', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('1', 'Fac1', 'test111@Fac1.com', '288149283781', '')
+go
+
+
+insert into MemberUser (AccountName, AccountPassword, UserFirstName, UserLastName, UserEmail)
+  values ('user5678', '+GOLl5svT3k92229GX4O4lp6bqMrCuIvXjxdEZ2DnnU=', '¨¤¨¤', '¤T', 'test5678@createUser.com')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('2', 'createUser', 'test5678@createUser.com', '025238219969', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('2', 'Goo1', 'test211@Goo1.com', '023646165033', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('2', 'Goo1', 'test212@Goo1.com', '708203961033', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('2', 'Goo1', 'test213@Goo1.com', '051776889608', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('2', 'Goo1', 'test214@Goo1.com', '028285868033', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('2', 'Goo1', 'test215@Goo1.com', '612454235969', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('2', 'Fac1', 'test211@Fac1.com', '441238889031', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('2', 'Fac1', 'test212@Fac1.com', '207646374033', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('2', 'Fac1', 'test213@Fac1.com', '207699634608', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('2', 'Fac1', 'test214@Fac1.com', '207919811684', '')
+insert into NewPassword (UserId, SourceName, SourceAccount, PasswordText, StateText)
+  values ('2', 'Fac1', 'test215@Fac1.com', '647701790033', '')
+go

@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PWDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MemberUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AccountPassword" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserFirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserLastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NewPassword">
+          <Key>
+            <PropertyRef Name="NewPasswordId" />
+          </Key>
+          <Property Name="NewPasswordId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="SourceName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SourceAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PasswordText" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="StateText" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_NewPassword_MemberUser">
+          <End Role="MemberUser" Type="Self.MemberUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NewPassword" Type="Self.NewPassword" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MemberUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="NewPassword">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PWDBModelStoreContainer">
+          <EntitySet Name="MemberUser" EntityType="Self.MemberUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NewPassword" EntityType="Self.NewPassword" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_NewPassword_MemberUser" Association="Self.FK_NewPassword_MemberUser">
+            <End Role="MemberUser" EntitySet="MemberUser" />
+            <End Role="NewPassword" EntitySet="NewPassword" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PWDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MemberUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AccountPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="NewPasswords" Relationship="Self.FK_NewPassword_MemberUser" FromRole="MemberUser" ToRole="NewPassword" />
+        </EntityType>
+        <EntityType Name="NewPassword">
+          <Key>
+            <PropertyRef Name="NewPasswordId" />
+          </Key>
+          <Property Name="NewPasswordId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="SourceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SourceAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordText" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StateText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MemberUser" Relationship="Self.FK_NewPassword_MemberUser" FromRole="NewPassword" ToRole="MemberUser" />
+        </EntityType>
+        <Association Name="FK_NewPassword_MemberUser">
+          <End Role="MemberUser" Type="Self.MemberUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NewPassword" Type="Self.NewPassword" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MemberUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="NewPassword">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PWDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MemberUsers" EntityType="Self.MemberUser" />
+          <EntitySet Name="NewPasswords" EntityType="Self.NewPassword" />
+          <AssociationSet Name="FK_NewPassword_MemberUser" Association="Self.FK_NewPassword_MemberUser">
+            <End Role="MemberUser" EntitySet="MemberUsers" />
+            <End Role="NewPassword" EntitySet="NewPasswords" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PWDBModelStoreContainer" CdmEntityContainer="PWDBEntities">
+          <EntitySetMapping Name="MemberUsers">
+            <EntityTypeMapping TypeName="PWDBModel.MemberUser">
+              <MappingFragment StoreEntitySet="MemberUser">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="AccountPassword" ColumnName="AccountPassword" />
+                <ScalarProperty Name="UserFirstName" ColumnName="UserFirstName" />
+                <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NewPasswords">
+            <EntityTypeMapping TypeName="PWDBModel.NewPassword">
+              <MappingFragment StoreEntitySet="NewPassword">
+                <ScalarProperty Name="NewPasswordId" ColumnName="NewPasswordId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SourceName" ColumnName="SourceName" />
+                <ScalarProperty Name="SourceAccount" ColumnName="SourceAccount" />
+                <ScalarProperty Name="PasswordText" ColumnName="PasswordText" />
+                <ScalarProperty Name="StateText" ColumnName="StateText" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram DiagramId="ebf10c02dae64bd9a8ce07ed0b6cf398" Name="Diagram1">
+        <EntityTypeShape EntityType="PWDBModel.MemberUser" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="PWDBModel.NewPassword" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="PWDBModel.FK_NewPassword_MemberUser" ManuallyRouted="false" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

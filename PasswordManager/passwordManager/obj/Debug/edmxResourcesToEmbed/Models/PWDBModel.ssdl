@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PWDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="MemberUser">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccountName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="AccountPassword" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserFirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserLastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NewPassword">
+    <Key>
+      <PropertyRef Name="NewPasswordId" />
+    </Key>
+    <Property Name="NewPasswordId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="SourceName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="SourceAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PasswordText" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="StateText" Type="nvarchar(max)" />
+  </EntityType>
+  <Association Name="FK_NewPassword_MemberUser">
+    <End Role="MemberUser" Type="Self.MemberUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="NewPassword" Type="Self.NewPassword" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MemberUser">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="NewPassword">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PWDBModelStoreContainer">
+    <EntitySet Name="MemberUser" EntityType="Self.MemberUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NewPassword" EntityType="Self.NewPassword" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_NewPassword_MemberUser" Association="Self.FK_NewPassword_MemberUser">
+      <End Role="MemberUser" EntitySet="MemberUser" />
+      <End Role="NewPassword" EntitySet="NewPassword" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

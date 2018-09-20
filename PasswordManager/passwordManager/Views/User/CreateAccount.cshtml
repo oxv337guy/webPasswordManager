@@ -1,0 +1,90 @@
+﻿@model passwordManager.Models.CreateAccountViewModel
+
+
+<div class="well col-sm-offset-1 col-sm-10">
+    <h1>Join Us!</h1>
+
+    <form class="form-horizontal" method="post">
+        <fieldset>
+
+            <!-- Form Name -->
+            <!--<legend>Form Name</legend>-->
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="LastName">姓</label>
+                <div class="col-md-4">
+                    <input id="LastName" name="UserLastName" 
+                           type="text" class="form-control input-md" 
+                           placeholder="姓氏"
+                           value="@Model.UserLastName" required="">
+
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="FirstName">名</label>
+                <div class="col-md-4">
+                    <input id="FirstName" name="UserFirstName" 
+                           type="text" class="form-control input-md"
+                           placeholder="名字"
+                           value="@Model.UserFirstName" required="">
+
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="UserEmail">E-mail</label>
+                <div class="col-md-4">
+                    <input id="UserEmail" name="UserEmail" 
+                           type="text" placeholder="abc123@abc.com" 
+                           class="form-control input-md" 
+                           value="@Model.UserEmail" required="">
+
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="UserNickName">建立帳號</label>
+                <div class="col-md-4">
+                    <input id="UserNickName" name="AccountName"
+                           type="text" placeholder="請填入用戶名稱"
+                           class="form-control input-md"
+                           value="@Model.AccountName" required="">
+                    &nbsp;<span class="ErrorMessage">@Model.ErrorMessageAccountNameExist</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="UserPassword">輸入密碼</label>
+                <div class="col-md-4">
+                    <input id="UserPassword" name="AccountPassword" type="password" placeholder="請輸入您的密碼" class="form-control input-md" required="">
+                    &nbsp;<span class="ErrorMessage">@Model.ErrorMessagePasswordDiff</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="UserPassword2">密碼核對</label>
+                <div class="col-md-4">
+                    <input id="UserPassword2" name="AccountPassword2" type="password" placeholder="請再輸入您的密碼" class="form-control input-md" required="">
+
+                </div>
+            </div>
+
+            <!-- Button (Double) -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="OkOrCancel"></label>
+                <div class="col-md-8">
+                    <button id="OkOrCancel" name="OkOrCancel" class="btn btn-info" value="Ok">申請</button>
+                    @*<button id="OkOrCancel" name="OkOrCancel" class="btn btn-default" value="Cancel">取消</button>*@
+                    <a href="/Home/Index" class="btn btn-default">取消</a>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+</div>

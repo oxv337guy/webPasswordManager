@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PWDBModelStoreContainer" CdmEntityContainer="PWDBEntities">
+    <EntitySetMapping Name="MemberUsers">
+      <EntityTypeMapping TypeName="PWDBModel.MemberUser">
+        <MappingFragment StoreEntitySet="MemberUser">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+          <ScalarProperty Name="AccountPassword" ColumnName="AccountPassword" />
+          <ScalarProperty Name="UserFirstName" ColumnName="UserFirstName" />
+          <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />
+          <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NewPasswords">
+      <EntityTypeMapping TypeName="PWDBModel.NewPassword">
+        <MappingFragment StoreEntitySet="NewPassword">
+          <ScalarProperty Name="NewPasswordId" ColumnName="NewPasswordId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="SourceName" ColumnName="SourceName" />
+          <ScalarProperty Name="SourceAccount" ColumnName="SourceAccount" />
+          <ScalarProperty Name="PasswordText" ColumnName="PasswordText" />
+          <ScalarProperty Name="StateText" ColumnName="StateText" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PWDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="MemberUser">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccountName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AccountPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="NewPasswords" Relationship="Self.FK_NewPassword_MemberUser" FromRole="MemberUser" ToRole="NewPassword" />
+  </EntityType>
+  <EntityType Name="NewPassword">
+    <Key>
+      <PropertyRef Name="NewPasswordId" />
+    </Key>
+    <Property Name="NewPasswordId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="SourceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SourceAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PasswordText" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StateText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MemberUser" Relationship="Self.FK_NewPassword_MemberUser" FromRole="NewPassword" ToRole="MemberUser" />
+  </EntityType>
+  <Association Name="FK_NewPassword_MemberUser">
+    <End Role="MemberUser" Type="Self.MemberUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="NewPassword" Type="Self.NewPassword" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MemberUser">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="NewPassword">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PWDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="MemberUsers" EntityType="Self.MemberUser" />
+    <EntitySet Name="NewPasswords" EntityType="Self.NewPassword" />
+    <AssociationSet Name="FK_NewPassword_MemberUser" Association="Self.FK_NewPassword_MemberUser">
+      <End Role="MemberUser" EntitySet="MemberUsers" />
+      <End Role="NewPassword" EntitySet="NewPasswords" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

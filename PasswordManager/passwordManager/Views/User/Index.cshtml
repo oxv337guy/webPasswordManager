@@ -1,0 +1,47 @@
+﻿@model passwordManager.Models.UserIndexViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="well col-sm-offset-4 col-sm-4">
+    <h1>
+        Welcom!
+        <span class="pull-right">
+            <a href="/User/CreateAccount" class="btn btn-info">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span class="glyphicon glyphicon-user"></span>
+            </a>
+        </span>
+    </h1>
+
+    <form method="post" action="">
+        <div class="form-group">
+            <lable for="UserAccount">
+                <span class="glyphicon glyphicon-user"></span>
+                &nbsp;帳號&nbsp;
+                <span class="ErrorMessage">@Model.MessageWrongAccount</span>
+            </lable>
+            <input class="form-control" type="text" id="UserAccount " name="UserAccount" value="@Model.UserAccount">
+        </div>
+
+        <div class="form-group">
+            <lable for="UserPassword">
+                <span class="glyphicon glyphicon-lock"></span>
+                &nbsp;密碼&nbsp;
+                <span class="ErrorMessage">@Model.MessageWrongPassword</span>
+            </lable>
+            <input class="form-control" type="password" id="UserPassword" name="UserPassword">
+        </div>
+
+        <br />
+        <div>
+            <button type="submit" class="btn btn-success btn-block" id="LoginButton" name="LoginButton" value="Login">
+                <span class="glyphicon glyphicon-off"></span>
+                登入
+            </button>
+        </div>
+
+
+
+    </form>
+</div>

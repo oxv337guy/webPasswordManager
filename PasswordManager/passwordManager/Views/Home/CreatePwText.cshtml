@@ -1,0 +1,233 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<br>
+<div class="container">
+    <form class="form-horizontal" method="post" action="">
+        
+
+
+
+        
+
+        <div class="form-group">
+            <div class="col-sm-2 right-label">
+                <lable>
+                    <span class="glyphicon glyphicon-lock"></span>
+                    &nbsp;原始密碼
+                </lable>
+            </div>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="password" class="form-control" 
+                           id="inputpw" name="OriginalPassword" value=""
+                           placeholder="請輸入您的密碼" required>
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="button" 
+                                id="pwShowOrOff">
+                            <i class="glyphicon glyphicon-eye-close"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2 right-label" for="inputSeed">
+                <lable>
+                    <span class="glyphicon glyphicon-leaf"></span>
+                    &nbsp;亂數種子
+                </lable>
+            </div>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="text" class="form-control"
+                           id="inputSeed" name="inputSeed" value=""
+                           placeholder="請輸入任意字串" required>
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="button"
+                                id="generateSeed">
+                            <i class="glyphicon glyphicon-tint"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <input type="hidden" class="form-control" id="pwChanged" name="PasswordText" value="">
+
+
+        
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+               
+
+                <button type="submit" class="btn btn-primary btn-block"
+                        id="changePassword" name="OkOrCancel" value="Ok">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                    密碼轉換
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+            
+
+            var tableColNumber = 10;
+            var tableRowNumber = 100;
+            var chrNumber = tableColNumber * tableRowNumber;
+
+            
+
+            function useSeed2CreateRandomChr() {
+                var givenSeed = $("#inputSeed").val();
+                var chrList = selectedCharList();
+                var ranChrElements = sequenceRandomChrResult(chrNumber, givenSeed, chrList);
+                return ranChrElements;
+            }
+
+            
+
+            function selectedCharList() {
+                var _chrlist1 = "0123456789";
+                var _chrlist2 = "abcdefghijkmnpqrstuvwxyz";
+                var _chrlist3 = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+                var _chrlist4 = "?!@@#$%^&*";
+                var _chrList = "";
+                
+                _chrList = _chrlist1 + _chrlist2 + _chrlist3 + _chrlist4;
+                return _chrList;
+            }
+
+
+            function sequenceRandomChrResult(_chrNumber, _givenSeed, _chrList) {
+                // Determing the Seed //
+                // Math.seedrandom();
+                Math.seedrandom(_givenSeed);
+
+                // Choosing a list of characters //
+                // var charList = "1234567890";  //length=10
+                var charList = _chrList;
+
+                // generating random character //
+                var result = "";
+                for(var i=0; i<_chrNumber; i++) {
+                    var randomNumber = Math.floor(Math.random() * charList.length);
+                    var tableElement = charList.substr(randomNumber, 1);
+                    // result += tableElement + " ";
+                    result += tableElement;
+                }
+
+                return result;
+            }
+
+            var noChrFlag = 0;
+            $("#changePassword").click(function () {
+                var compareChar = $("#inputpw").val();
+
+                noChrFlag = 0;
+                var aChr = "";
+                var indexSequence = new Array();
+                var aIndNum = 0;
+                var compareResult = new Array();
+                for (var i=0; i<compareChar.length; i++) {
+                    aChr = compareChar.slice(i, i+1);
+                    indexSequence = aChrCompare2RandomList(aChr);
+                    aIndNum = Math.floor(newRandomNum() * indexSequence.length);
+                    compareResult.push(indexSequence[aIndNum]);
+                }
+                
+
+                var newpw = "";
+                var m = n = 0;
+                for (var j=0; j<compareResult.length; j++) {
+                    m = Math.floor(compareResult[j] / tableColNumber);
+                    n = compareResult[j] % tableColNumber;
+                    // newpw += String(m + 1) + String(n) + " ";
+                    //newpw += String(m) + String(n) + " ";
+                    newpw += String(m+1000).substr(2,3) + String(n);
+
+                }
+
+                if (noChrFlag == 0) {
+                    $("#pwChanged").prop("value", newpw);
+                }
+                else {
+                    $("#pwChanged").prop("value", "");
+                    // alert("當前亂數表中未含輸入密碼之字元符號，請更換亂數種子並重新執行!");
+                    $("#statement2 h1").html("符號不足");
+                    $("#statement2 p").html("當前亂數表中未含輸入密碼之字元符號，請更換亂數種子、確認勾選字元元素並重新執行!");
+                    $("#statement2").css("top", "170px");
+                }
+
+            });
+
+            function newRandomNum () {
+                Math.seedrandom();
+                var n = Math.random();
+                return n;
+            }
+
+            function aChrCompare2RandomList(_compareChar) {
+                var ranChrElements = useSeed2CreateRandomChr();
+
+                var indArray = new Array();
+
+                var i = 0;
+                var newInd = 0;
+                var testFirst = ranChrElements.indexOf(_compareChar);
+
+                if (testFirst == -1) {
+                    indArray.push(testFirst);
+                    noChrFlag = 1;
+                }
+                else {
+                    while (testFirst + 1) {
+                        newInd = ranChrElements.indexOf(_compareChar, newInd + i);
+                        indArray.push(newInd);
+                        i = 1;
+
+                        testFirst = ranChrElements.indexOf(_compareChar, newInd + 1);
+                    }
+                }
+                return indArray;
+            }
+
+            var testFlag = 0;
+            $("#pwShowOrOff").click(function () {
+                if (testFlag == 0) {
+                    $("#inputpw").prop("type", "text");
+                    // $("#pwShowOrOff").text("密碼隱藏");
+                    $("#pwShowOrOff").html('<i class="glyphicon glyphicon-eye-open"></i>');
+                    testFlag = 1;
+                }
+                else {
+                    $("#inputpw").prop("type", "password");
+                    // $("#pwShowOrOff").text("密碼顯示");
+                    $("#pwShowOrOff").html('<i class="glyphicon glyphicon-eye-close"></i>');
+                    testFlag = 0;
+                }
+            })
+
+            $("#generateSeed").click(function () {
+                var randomChrComponent = selectedCharList();
+                var seedLength = Math.floor((newRandomNum() * 10) + 1);  //1~10
+                var newSeed = new String();
+                var ind = new Number();
+                for (var i=0; i<seedLength; i++) {
+                    ind = newRandomNum() * randomChrComponent.length;
+                    newSeed += randomChrComponent.substr(ind, 1);
+                }
+                $("#inputSeed").val(newSeed);
+            })
+
+
+</script>

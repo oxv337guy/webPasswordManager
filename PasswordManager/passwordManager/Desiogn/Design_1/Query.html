@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Demo</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet" />
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> 
+                  </button>
+                  <a class="navbar-brand" href="#">歡迎使用密碼管理</a>
+                </div>
+                <div id="myNavbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav ">
+                        <li class="active"><a href="Index.html"><span class="glyphicon glyphicon-home"></span>&nbsp;首頁</a></li>
+                        <li><a href="Replace.html"><span class="glyphicon glyphicon-edit"></span>&nbsp;轉換密碼</a></li>
+                        <li><a href="Storage.html"><span class="glyphicon glyphicon-save"></span>&nbsp;儲存</a></li>
+                        <li><a href="Query.html"><span class="glyphicon glyphicon-search"></span>&nbsp;查詢</a></li>
+                        <li><a href="PasswordList.html"><span class="glyphicon glyphicon-th-list"></span>&nbsp;清單</a></li>
+                        
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="Login.html"><span class="glyphicon glyphicon-log-in"></span>&nbsp;登入</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        
+        
+        <div class="container">
+            
+            <!--<h1>Query</h1>-->
+            <br />
+            
+            <from method="post" action="">
+                <div class="form-group">
+                    <lable>帳號來源</lable>
+                    <select class="form-control" id="Soutce" name="Soutce">
+                        <option value="1">Google</option>
+                        <option value="2">Facebook</option>
+                        <option value="3">CityBank</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <lable>帳號</lable>
+                    <select class="form-control" id="Account" name="Account">
+                        <option value="1">abc123</option>
+                        <option value="2">ABC@xmail</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <lable>亂數種子</lable>
+                    <input class="form-control" type="text" id="OriginSeed" name="OriginSeed" placeholder="請輸入您的初始種子">
+                </div>
+                
+                <div class="form-group">
+                    <lable>原始密碼</lable>
+                    <input class="form-control" type="password" id="OriginPassword" name="OriginPassword" readonly="readonly">
+                </div>
+                
+                <br />
+                <button type="submit" id="QueryOrEdit" name="QueryOrEdit" value="Query" class="btn btn-default">
+                    查詢</button>
+                <button type="submit" id="QueryOrEdit" name="QueryOrEdit" value="Edit" class="btn btn-default">
+                    修改</button>
+            </form>
+        </div>
+    </body>
+</html>
